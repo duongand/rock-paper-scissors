@@ -56,5 +56,5 @@ function update_header(userChoice, computerChoice, result) {
     document.getElementById('score').innerText = `(User) ${userWins} - ${computerWins} (Computer)`;
     document.getElementById('user-choice').innerText = `The user chose ${userChoice}`;
     document.getElementById('computer-choice').innerText = `The computer chose ${computerChoice}`; 
-    cdocument.getElementById('result').innerText = result;
+    document.getElementById('result').innerText = result;
 };
