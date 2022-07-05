@@ -1,71 +1,60 @@
-const valid_choice = ['rock', 'paper', 'scissor'];
+const validChoice = ['rock', 'paper', 'scissors'];
 const choice = document.getElementsByClassName('choice');
-let user_wins = 0;
-let computer_wins = 0;
+let userWins = 0;
+let computerWins = 0;
 
-// Applying event listeners to the rock, paper, scissor images
 for (let i = 0; i < choice.length; i++) {
     choice[i].addEventListener('click', () => {
-        computer_response(choice[i].attributes.value.value);
+        computerResponse(choice[i].attributes.value.value);
     });
 };
 
-// Determine the results from the computer's response
-function computer_response(user_choice) {
-
-    // Numerically randomize the computer's chosen gesture
-    const computer_numeric_choice = Math.floor(Math.random() *  valid_choice.length);
-    let computer_choice = valid_choice[computer_numeric_choice];
+function computerResponse(userChoice) {
+    const computerNumericChoice = Math.floor(Math.random() *  validChoice.length);
+    const computerChoice = validChoice[computerNumericChoice];
     let result;
 
-    // Determine the results based on the game's rule
-    if (computer_choice === user_choice) {
-        result = 'The result is a tie!';
-    } else if (computer_choice === 'rock') {
-        if (user_choice === 'paper') {
-            user_wins += 1;
-            result = 'The user won!';
-        } else {
-            computer_wins += 1;
-            result = 'The computer won!';
-        };
-    } else if (computer_choice === 'paper') {
-        if (user_choice === 'rock') {
-            computer_wins += 1;
-            result = 'The computer won!';
-        } else {
-            user_wins += 1;
-            result = 'The user won!';
-        };
-    } else if (computer_choice === 'scissor') {
-        if (user_choice === 'rock') {
-            user_wins += 1;
-            result = 'The user won!';
-        } else {
-            computer_wins += 1;
-            result = 'The computer won!';
-        };
+    switch (computerChoice) {
+        case userChoice:
+            result = 'The result is a tie!';
+            break;
+        case 'rock':
+            if (userChoice === 'paper') {
+                userWins += 1;
+                result = 'The user won!';
+            } else {
+                computerWins += 1;
+                result = 'The computer won!';
+            };
+            break;
+        case 'paper':
+            if (userChoice === 'rock') {
+                computerWins += 1;
+                result = 'The computer won!';
+            } else {
+                userWins += 1;
+                result = 'The user won!';
+            };
+            break;
+        case 'scissors':
+            if (userChoice === 'rock') {
+                userWins += 1;
+                result = 'The user won!';
+            } else {
+                computerWins += 1;
+                result = 'The computer won!';
+            };
+            break;
+        default:
+            break;
     };
 
-    update_header(user_choice, computer_choice, result);
-
+    update_header(userChoice, computerChoice, result);
 };
 
-// Manipulate the DOM elements to display an updated scoreboard, chosen gestures, and the latest results
-function update_header(user_choice, computer_choice, result) {
-
-    const scoreboard = document.getElementById('score');
-    const user_choice_display = document.getElementById('user-choice');
-    const computer_choice_display = document.getElementById('computer-choice');
-    const result_display = document.getElementById('result');
-    
-    let score_string = `(User) ${user_wins} - ${computer_wins} (Computer)`
-    let user_choice_string = `The user chose ${user_choice}`;
-    let computer_choice_string = `The computer chose ${computer_choice}`; 
-    
-    scoreboard.innerText = score_string;
-    user_choice_display.innerText = user_choice_string;
-    computer_choice_display.innerText = computer_choice_string;
-    result_display.innerText = result;
-
+function update_header(userChoice, computerChoice, result) {
+    document.getElementById('score').innerText = `(User) ${userWins} - ${computerWins} (Computer)`;
+    document.getElementById('user-choice').innerText = `The user chose ${userChoice}`;
+    document.getElementById('computer-choice').innerText = `The computer chose ${computerChoice}`; 
+    cdocument.getElementById('result').innerText = result;
 };
