@@ -1,58 +1,60 @@
-const validChoice = ['rock', 'paper', 'scissors'];
-const choice = document.getElementsByClassName('choice');
 let userWins = 0;
 let computerWins = 0;
 
-for (let i = 0; i < choice.length; i++) {
-    choice[i].addEventListener('click', () => {
-        computerResponse(choice[i].attributes.value.value);
+const choice = document.getElementsByClassName('choice');
+for (const element of choice) {
+    element.addEventListener('click', () => {
+        runGame(element.attributes.value.value);
     });
 };
 
-function computerResponse(userChoice) {
-    const computerNumericChoice = Math.floor(Math.random() *  validChoice.length);
-    const computerChoice = validChoice[computerNumericChoice];
-    let result;
+function runGame(userChoice) {
+    const computerChoice = getComputerChoice();
+    const result = determineWinner(userChoice, computerChoice);
 
-    switch (computerChoice) {
-        case userChoice:
-            result = 'The result is a tie!';
-            break;
-        case 'rock':
-            if (userChoice === 'paper') {
-                userWins += 1;
-                result = 'The user won!';
-            } else {
-                computerWins += 1;
-                result = 'The computer won!';
-            };
-            break;
-        case 'paper':
-            if (userChoice === 'rock') {
-                computerWins += 1;
-                result = 'The computer won!';
-            } else {
-                userWins += 1;
-                result = 'The user won!';
-            };
-            break;
-        case 'scissors':
-            if (userChoice === 'rock') {
-                userWins += 1;
-                result = 'The user won!';
-            } else {
-                computerWins += 1;
-                result = 'The computer won!';
-            };
-            break;
-        default:
-            break;
-    };
-
-    update_header(userChoice, computerChoice, result);
+    updateScore(result);
+    updateDisplay(userChoice, computerChoice, getResultString(result));
 };
 
-function update_header(userChoice, computerChoice, result) {
+function getComputerChoice () {
+    const validChoice = ['rock', 'paper', 'scissors'];
+    const computerNumericChoice = Math.floor(Math.random() *  validChoice.length);
+    return validChoice[computerNumericChoice];
+};
+
+function updateScore(result) {
+    if (result === 'win') {
+        userWins++;
+    } else if (result === 'lose') {
+        computerWins++;
+    };
+};
+
+function getResultString(result) {
+    const resultString = {
+        'win': 'The user won!',
+        'lose': 'The computer won!',
+        'tie': 'It was a tie!',
+    };
+
+    return resultString[result];
+};
+
+function determineWinner(userChoice, computerChoice) {
+    return getPermutations()[userChoice][computerChoice];
+};
+
+function getPermutations() {
+    const PERMUTATIONS = {
+        'rock': {'rock': 'tie', 'paper': 'lose', 'scissors': 'win'},
+        'paper': {'rock': 'win', 'paper': 'tie', 'scissors': 'lose'},
+        'scissors': {'rock': 'lose', 'paper': 'win', 'scissors': 'tie'},
+    };
+
+    return PERMUTATIONS;
+};
+
+function updateDisplay(userChoice, computerChoice, result) {
     document.getElementById('score').innerText = `(User) ${userWins} - ${computerWins} (Computer)`;
     document.getElementById('user-choice').innerText = `The user chose ${userChoice}`;
     document.getElementById('computer-choice').innerText = `The computer chose ${computerChoice}`; 
